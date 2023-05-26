@@ -8,7 +8,7 @@ from infrastructure.helper.utils import TEHRAN
 from stock_info.market_watch.models import MarketWatchModel
 from stock_info.market_watch.save_data import save_market_watch_data
 from stock_info.market_watch.utils import *
-from stock_info.urls import MARKET_WATCH_URL
+from stock_info.urls import INIT_MARKET_WATCH_URL, PLUS_MARKET_WATCH_URL
 
 
 class MarketWatch:
@@ -57,6 +57,7 @@ class MarketWatch:
             market_watch_model = MarketWatchModel(stock_id=sample[row_indices.identifier.id],
                                                   price=sample[row_indices.fields.last_price],
                                                   volume=sample[row_indices.fields.volume])
+            # convert_string_to_time(sample[4])
             self.data.append(market_watch_model)
         return self.data
 
@@ -110,7 +111,7 @@ class MarketWatch:
                 print('start project....')
                 # if self.check_time(hour=10) \
                 #         and not self.is_market_closed():
-                self.start(MARKET_WATCH_URL)
+                self.start(INIT_MARKET_WATCH_URL)
                 time.sleep(10)
                 break
             except Exception as e:
@@ -122,7 +123,8 @@ class MarketWatch:
         save_market_watch_data(self.data)
 
     def get_data(self):
-        self.req(MARKET_WATCH_URL.format(h=self.__heven, r=self.__refer))
+        url = INIT_MARKET_WATCH_URL if self.__heven == 0 and self.__refer == 0 else PLUS_MARKET_WATCH_URL
+        self.req(url.format(h=self.__heven, r=self.__refer))
         self.split_data()
         self.calculate_refer()
         self.model_data()
