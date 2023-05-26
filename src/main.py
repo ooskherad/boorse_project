@@ -1,16 +1,17 @@
-# This is a sample Python script.
+from multiprocessing.context import Process
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from workers.stock_info import market_watch_worker
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    workers = [
+        market_watch_worker,
+    ]
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    processes = [Process(target=worker) for worker in workers]
+
+    try:
+        for process in processes:
+            process.start()
+    except KeyboardInterrupt:
+        for process in processes:
+            process.terminate()
