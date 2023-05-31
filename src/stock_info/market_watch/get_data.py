@@ -61,63 +61,11 @@ class MarketWatch:
             self.data.append(market_watch_model)
         return self.data
 
-    @staticmethod
-    def check_time(
-            hour: int,
-            minute: int = 0,
-            second: int = 0,
-            microsecond: int = 0
-    ):
-        now = datetime.now(TEHRAN)
-        specific_time = datetime.now(TEHRAN).replace(
-            hour=hour, minute=minute,
-            second=second, microsecond=microsecond
-        )
-        if now > specific_time:
-            return True
-        else:
-            return False
-
     def is_market_closed(self):
         if self.__heven == self.__heven_history \
                 and self.__refer == self.__refer_history:
             return True
         return False
-
-    def start(self, base_url):
-        while True:
-            # check for expiration of market time
-            # if self.check_time(hour=13, minute=30):
-            #     break
-
-            # send request
-            url = base_url.format(h=self.__heven, r=self.__refer)
-            self.req(url)
-            # split string data to list per each symbol
-            self.split_data()
-            self.calculate_refer()
-            # packing data for send to infulxdb
-            insert_data = self.model_data()
-
-            # sleep time
-            time.sleep(1)
-
-    def main(self):
-        while True:
-            # check for market is closed
-            # check for start market time (h=10, because time zone not true)
-            # correct market start time is 9:00 am
-            try:
-                print('start project....')
-                # if self.check_time(hour=10) \
-                #         and not self.is_market_closed():
-                self.start(INIT_MARKET_WATCH_URL)
-                time.sleep(10)
-                break
-            except Exception as e:
-                print(e)
-                time.sleep(20)
-                pass
 
     def save_data(self):
         save_market_watch_data(self.data)
