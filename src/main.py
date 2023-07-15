@@ -1,6 +1,6 @@
 from multiprocessing.context import Process
 
-from workers.stock_info import market_watch_worker
+from workers.market_watch import market_watch_worker
 
 if __name__ == '__main__':
     workers = [
