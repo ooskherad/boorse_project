@@ -4,6 +4,7 @@ import requests
 
 from stock_info.client_types.models import ClientTypeAllModel
 from stock_info.client_types.save_data import save_client_types_data
+from stock_info.market_watch.models import MarketWatchModel
 from stock_info.urls import CLIENT_TYPE_ALL_URL, DEFAULT_HEADERS
 
 
@@ -40,14 +41,20 @@ class ClientType:
 
     def get_data(self):
         self.data.clear()
+        self.__data.clear()
         self.req(CLIENT_TYPE_ALL_URL)
         self.split_data()
         self.model_data()
 
-    def save_data(self, last_changed_identifier: List[str] = None):
-        if last_changed_identifier:
-            data = [item for item in self.data if item.stock_id in last_changed_identifier]
-        else:
-            data = self.data
-
+    def save_data(self, last_changed_identifier: List[MarketWatchModel]):
+        data = []
+        self.data = sorted(self.data, key=lambda item: item.stock_id)
+        last_changed_identifier = sorted(last_changed_identifier, key=lambda item: item.stock_id)
+        for client_data in self.data:
+            for stock_info in last_changed_identifier:
+                if client_data.stock_id == stock_info.stock_id:
+                    client_data.last_price = stock_info.price
+                    client_data.transaction_at = stock_info.transaction_at
+                    data.append(client_data)
+                    break
         save_client_types_data(data)

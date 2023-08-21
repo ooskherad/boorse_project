@@ -4,7 +4,7 @@ from typing import List
 
 import requests as requests
 
-from infrastructure.helper.utils import TEHRAN
+from infrastructure.helper.utils import TEHRAN, convert_string_to_time
 from stock_info.market_watch.models import MarketWatchModel
 from stock_info.market_watch.save_data import save_market_watch_data
 from stock_info.market_watch.utils import *
@@ -57,7 +57,7 @@ class MarketWatch:
             market_watch_model = MarketWatchModel(stock_id=sample[row_indices.identifier.id],
                                                   price=sample[row_indices.fields.last_price],
                                                   volume=sample[row_indices.fields.volume])
-            # convert_string_to_time(sample[4])
+            convert_string_to_time(sample[row_indices.fields.transaction_at])
             self.data.append(market_watch_model)
         return self.data
 

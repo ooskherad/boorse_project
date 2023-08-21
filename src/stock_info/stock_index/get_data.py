@@ -5,6 +5,7 @@ import requests
 
 from stock_info.stock_indentifier.models import Stock
 from stock_info.stock_index.models import Index
+from stock_info.stock_index.save_data import save_stock_indices_data
 from stock_info.urls import MARKET_INDICES, DEFAULT_HEADERS, INDEX_STOCKS
 
 
@@ -36,3 +37,7 @@ class StockIndex:
                 for stock in stocks["indexCompany"]:
                     stock = stock["instrument"]
                     index.add_stock(Stock(identifier=stock["insCode"], name_fa=stock["lVal30"]))
+
+
+    def save_data(self):
+        save_stock_indices_data(self.data)

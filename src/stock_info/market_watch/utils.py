@@ -8,6 +8,7 @@ class FirstReqIndices:
     fields = type("fields", (), {
         "volume": 9,
         "last_price": 7,
+        "transaction_at": 4,
     })
     heven = 4
 
@@ -19,5 +20,6 @@ class UpdateReqIndices:
     fields = type("fields", (), {
         "volume": 6,
         "last_price": 4,
+        "transaction_at": 1,
     })
     heven = 1
