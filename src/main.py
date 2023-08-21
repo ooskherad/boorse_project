@@ -1,4 +1,4 @@
-from multiprocessing.context import Process
+from joblib import Parallel, delayed
 
 from infrastructure.database.postgres.data_types import BaseModel
 from infrastructure.database.postgres.postgres_connection import DEFAULT_ENGIN
@@ -12,11 +12,4 @@ if __name__ == '__main__':
         market_watch_worker,
     ]
 
-    processes = [Process(target=worker) for worker in workers]
-
-    try:
-        for process in processes:
-            process.start()
-    except KeyboardInterrupt:
-        for process in processes:
-            process.terminate()
+    Parallel(n_jobs=len(workers))(delayed(worker)() for worker in workers)
