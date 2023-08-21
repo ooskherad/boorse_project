@@ -13,9 +13,9 @@ def market_watch_worker():
     client_types = ClientType()
     market_watch = MarketWatch()
     while True:
-        if not _check_condition() or market_watch.is_market_closed():
+        if not _check_condition():
             time.sleep(5)
-            break
+            continue
         try:
             market_watch.get_data()
             client_types.get_data()
