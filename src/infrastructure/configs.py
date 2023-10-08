@@ -7,10 +7,10 @@ class Config(BaseSettings):
 
     # POSTGRES CONFIGS
     POSTGRES_USER = "postgres"
-    POSTGRES_PASSWORD = "SnkECs2DM1IA13MbobWE1yLb0GMd6FIs"
-    POSTGRES_DATABASE = "boorse"
-    POSTGRES_PORT = "30654"
-    POSTGRES_HOST = "38928227-af07-41b4-82f7-c21f09f41e43.hsvc.ir"
+    POSTGRES_PASSWORD = "1234"
+    POSTGRES_DATABASE = "postgres"
+    POSTGRES_PORT = "5434"
+    POSTGRES_HOST = "37.32.27.95"
 
     INFLUX_URL = ""
     INFLUX_TOKEN = ""

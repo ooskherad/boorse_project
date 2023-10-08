@@ -13,18 +13,20 @@ def market_watch_worker():
     client_types = ClientType()
     market_watch = MarketWatch()
     while True:
-        if not _check_condition():
-            time.sleep(5)
-            continue
+        # if not _check_condition():
+        #     time.sleep(5)
+        #     continue
         try:
             market_watch.get_data()
-            client_types.get_data()
-
+            market_watch.save_new_stocks()
             # market_watch.save_data()
+
+            client_types.get_data()
             client_types.save_data(market_watch.data)
             time.sleep(2)
         except Exception as e:
             print(e)
+            raise e
             time.sleep(10)
 
 

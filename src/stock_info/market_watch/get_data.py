@@ -4,6 +4,8 @@ from typing import List
 
 import requests as requests
 
+from databse.models import Stock
+from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
 from infrastructure.helper.utils import TEHRAN, convert_string_to_time
 from stock_info.market_watch.models import MarketWatchModel
 from stock_info.market_watch.save_data import save_market_watch_data
@@ -57,7 +59,7 @@ class MarketWatch:
             market_watch_model = MarketWatchModel(stock_id=sample[row_indices.identifier.id],
                                                   price=sample[row_indices.fields.last_price],
                                                   volume=sample[row_indices.fields.volume])
-            convert_string_to_time(sample[row_indices.fields.transaction_at])
+            market_watch_model.transaction_at = convert_string_to_time(sample[row_indices.fields.transaction_at])
             self.data.append(market_watch_model)
         return self.data
 
@@ -69,6 +71,17 @@ class MarketWatch:
 
     def save_data(self):
         save_market_watch_data(self.data)
+
+    def save_new_stocks(self):
+        session = DEFAULT_SESSION_FACTORY()
+        stocks_in_db = [str(stock.id) for stock in session.query(Stock.id).all()]
+        for item in self.data:
+            if item.stock_id not in stocks_in_db:
+                stock_model = Stock()
+                stock_model.id = item.stock_id
+                session.add(stock_model)
+                stocks_in_db.append(item.stock_id)
+        session.commit()
 
     def get_data(self):
         url = INIT_MARKET_WATCH_URL if self.__heven == 0 and self.__refer == 0 else PLUS_MARKET_WATCH_URL
