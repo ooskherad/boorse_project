@@ -2,20 +2,17 @@
 FROM python:latest
 
 
-#Labels as key value pair
-LABEL Maintainer="roushan.me17"
+# Set the working directory in the container
+WORKDIR /app
 
+# Copy the requirements file into the container at /app
+COPY requirements.txt /app/
 
-# Any working directory can be chosen as per choice like '/' or '/home' etc
-# i have chosen /usr/app/src
-WORKDIR /usr/app/src
+# Install any needed packages specified in requirements.txt
+RUN pip install -r requirements.txt
 
-#to COPY the remote file at working directory in container
-COPY main.py ./
-# Now the structure looks like this '/usr/app/src/test.py'
+# Copy the rest of the application code into the container
+COPY src/ /app/
 
-
-#CMD instruction should be used to run the software
-#contained by your image, along with any arguments.
-
-CMD [ "python", "./main.py"]
+# Define the command to run your script when the container starts
+CMD ["python", "main.py"]
