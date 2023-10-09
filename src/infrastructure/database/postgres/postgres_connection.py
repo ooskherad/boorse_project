@@ -10,7 +10,7 @@ DEFAULT_ENGIN = create_engine(
     DEFAULT_URl,
     poolclass=NullPool,
     isolation_level="REPEATABLE READ",
-    echo=True,
+    echo=config.DEBUG,
 )
 
 DEFAULT_SESSION_FACTORY = sessionmaker(
