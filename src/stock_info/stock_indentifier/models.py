@@ -17,3 +17,17 @@ class Stock:
                  **kwargs):
         self.identifier = identifier
         self.name_fa = name_fa
+        self.name_en = name_en
+        self.symbol_name = symbol_name
+        self.company_digit_code12 = company_digit_code12
+        self.symbol_digit_code12 = symbol_digit_code12
+        self.symbol_digit5 = symbol_digit5
+        self.company_digit4 = company_digit4
+        self.market = market
+        self.table_code = table_code
+        self.industry_group_code = industry_group_code
+        self.industry_subgroup_code = industry_subgroup_code
+        self.industry_group_name = industry_group_name
+        self.industry_subgroup_name = industry_subgroup_name
+        self.base_volume = base_volume
+

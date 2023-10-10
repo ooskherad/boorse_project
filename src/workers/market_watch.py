@@ -8,8 +8,6 @@ from stock_info.stock_index.get_data import StockIndex
 
 
 def market_watch_worker():
-    a = StockIndex()
-    a.get_data()
     client_types = ClientType()
     market_watch = MarketWatch()
     while True:
@@ -26,14 +24,13 @@ def market_watch_worker():
             time.sleep(2)
         except Exception as e:
             print(e)
-            raise e
-            time.sleep(10)
+            time.sleep(5)
 
 
 def _check_condition():
     now = datetime.datetime.now()
     start_at = datetime.time(hour=8, minute=59)
-    end_at = datetime.time(hour=12, minute=31)
+    end_at = datetime.time(hour=1, minute=31)
     if start_at < now.time() < end_at:
         return True
     return False

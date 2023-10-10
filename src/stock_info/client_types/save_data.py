@@ -18,13 +18,16 @@ def save_in_postgres(data: List[ClientTypeAllModel]):
     query = text("""
             select * from (
           select *,
-                 row_number() over (partition by id order by id desc) as rn
+                 row_number() over (partition by stock_id order by id desc) as rn
           from stock_client_types
+          where stock_id::text = ANY(:stock_ids)
         ) t
         where rn = 1
         order by id;
     """)
-    client_type_in_db = [make_expression(factory_stock_client_type(**r._mapping)) for r in session.execute(query).all()]
+    stock_ids = [item.stock_id for item in data]
+    last_client_type = session.execute(query, {'stock_ids': stock_ids}).fetchall()
+    client_type_in_db = [make_expression(factory_stock_client_type(**r._mapping)) for r in last_client_type]
 
     if isinstance(data, ClientTypeAllModel):
         data = [data]

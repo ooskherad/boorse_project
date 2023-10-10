@@ -4,6 +4,7 @@ PLUS_MARKET_WATCH_URL = "http://old.tsetmc.com/tsev2/data/MarketWatchPlus.aspx?h
 CLIENT_TYPE_ALL_URL = "http://old.tsetmc.com/tsev2/data/ClientTypeAll.aspx"
 MARKET_INDICES = "http://cdn.tsetmc.com/api/Index/GetIndexB1LastAll/All/{market}"
 INDEX_STOCKS = "http://cdn.tsetmc.com/api/ClosingPrice/GetIndexCompany/{index_id}"
+STOCK_IDENTIFIER = "http://cdn.tsetmc.com/api/Instrument/GetInstrumentIdentity/{stock_id}"
 
 DEFAULT_HEADERS = {
     "Accept": "text/plain, */*; q=0.01",
