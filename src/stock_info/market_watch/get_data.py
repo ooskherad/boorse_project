@@ -1,12 +1,13 @@
-import time
-from datetime import datetime
+import datetime
 from typing import List
 
+import jdatetime
 import requests as requests
 
 from databse.models import Stock
 from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
 from infrastructure.helper.utils import TEHRAN, convert_string_to_time
+from infrastructure.http_request import get
 from stock_info.market_watch.models import MarketWatchModel
 from stock_info.market_watch.save_data import save_market_watch_data
 from stock_info.market_watch.utils import *
@@ -23,15 +24,21 @@ class MarketWatch:
         self.__heven = 0
         self.__refer = 0
         self.__len_data = 0
+        self.date = None
 
     def req(self, url):
-        resp = requests.get(url)
+        resp = get(url)
         self.__raw_data = resp.text
 
     def split_data(self):
         data_ = self.__raw_data.split('@')
-        self.__data = data_[2].split(';')
-        self.__len_data = len(self.__data[0].split(','))
+        try:
+            self.__data = data_[2].split(';')
+            split_date = data_[1].split(' ')[0].split('/')
+            self.date = jdatetime.date(int('14' + split_date[0]), int(split_date[1]), int(split_date[2])).togregorian()
+            self.__len_data = len(self.__data[0].split(','))
+        except Exception as e:
+            print(e)
 
     def calculate_refer(self):
         self.__refer_history = self.__refer
@@ -44,22 +51,28 @@ class MarketWatch:
 
     def get_data_indices(self):
         if self.__len_data == 10:
-            return UpdateReqIndices()
+            return UpdateReqIndices
         else:
-            return FirstReqIndices()
+            return FirstReqIndices
 
     def model_data(self):
         self.data.clear()
         row_indices = self.get_data_indices()
         for row_data in self.__data:
             sample = row_data.split(',')
-
-            self.calculate_heven(sample[row_indices.heven])
-
-            market_watch_model = MarketWatchModel(stock_id=sample[row_indices.identifier.id],
-                                                  price=sample[row_indices.fields.last_price],
-                                                  volume=sample[row_indices.fields.volume])
-            market_watch_model.transaction_at = convert_string_to_time(sample[row_indices.fields.transaction_at])
+            market_watch_model = MarketWatchModel()
+            for key, index in row_indices.__members__.items():
+                key = key.lower()
+                value = sample[index.value]
+                if hasattr(market_watch_model, key):
+                    if key == 'transaction_at':
+                        value = convert_string_to_time(sample[index.value], self.date)
+                        self.calculate_heven(sample[index.value])
+                    if MarketWatchModel.__annotations__[key] == int:
+                        value = int(float(value)) if value and value != '' else value
+                    setattr(market_watch_model, key, value)
+                else:
+                    print()
             self.data.append(market_watch_model)
         return self.data
 

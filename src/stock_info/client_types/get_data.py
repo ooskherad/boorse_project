@@ -5,7 +5,8 @@ import requests
 from stock_info.client_types.models import ClientTypeAllModel
 from stock_info.client_types.save_data import save_client_types_data
 from stock_info.market_watch.models import MarketWatchModel
-from stock_info.urls import CLIENT_TYPE_ALL_URL, DEFAULT_HEADERS
+from stock_info.urls import CLIENT_TYPE_ALL_URL
+from infrastructure.http_request import DEFAULT_HEADERS, get
 
 
 class ClientType:
@@ -15,7 +16,7 @@ class ClientType:
         self.__data = []
 
     def req(self, url):
-        resp = requests.get(url, headers=DEFAULT_HEADERS)
+        resp = get(url)
         self.__raw_data = resp.text
 
     def split_data(self):
@@ -53,7 +54,7 @@ class ClientType:
         for client_data in self.data:
             for stock_info in last_changed_identifier:
                 if client_data.stock_id == stock_info.stock_id:
-                    client_data.last_price = stock_info.price
+                    client_data.last_price = stock_info.price_last
                     client_data.transaction_at = stock_info.transaction_at
                     data.append(client_data)
                     break

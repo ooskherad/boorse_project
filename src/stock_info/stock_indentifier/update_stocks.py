@@ -4,7 +4,8 @@ import requests
 
 from databse.models import Stock
 from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
-from stock_info.urls import STOCK_IDENTIFIER, DEFAULT_HEADERS
+from stock_info.urls import STOCK_IDENTIFIER
+from infrastructure.http_request import DEFAULT_HEADERS
 
 
 # {'instrumentIdentity': {'sector': {'dEven': 0, 'cSecVal': '01 ', 'lSecVal': 'زراعت و خدمات وابسته'}, 'subSector': {'dEven': 0, 'cSecVal': None, 'cSoSecVal': 121, 'lSoSecVal': 'كشاورزي، دامپروري و خدمات وابسته'}, 'cValMne': 'ZPRS1', 'lVal18': 'Pars Agro.', 'cSocCSAC': 'ZPRS', 'lSoc30': 'ملي كشت و صنعت و دامپروري پارس', 'yMarNSC': 'NO', 'yVal': '300', 'insCode': '0', 'lVal30': 'ملي كشت و صنعت و دامپروري پارس', 'lVal18AFC': 'زپارس', 'flow': 0, 'cIsin': 'IRO1ZPRS0001', 'zTitad': 0.0, 'baseVol': 0, 'instrumentID': 'IRO1ZPRS0001', 'cgrValCot': 'N2', 'cComVal': '5', 'lastDate': 0, 'sourceID': 0, 'flowTitle': '', 'cgrValCotTitle': 'بازار دوم بورس'}}

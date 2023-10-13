@@ -15,16 +15,18 @@ def market_watch_worker():
         #     time.sleep(5)
         #     continue
         try:
+            a = datetime.datetime.now()
             market_watch.get_data()
             market_watch.save_new_stocks()
             # market_watch.save_data()
 
             client_types.get_data()
             client_types.save_data(market_watch.data)
-            time.sleep(2)
+            if datetime.datetime.now() - a < datetime.timedelta(seconds=2):
+                time.sleep(1)
         except Exception as e:
             print(e)
-            time.sleep(5)
+            time.sleep(1)
 
 
 def _check_condition():

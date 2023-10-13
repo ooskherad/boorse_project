@@ -6,7 +6,8 @@ import requests
 from stock_info.stock_indentifier.models import Stock
 from stock_info.stock_index.models import Index
 from stock_info.stock_index.save_data import save_stock_indices_data
-from stock_info.urls import MARKET_INDICES, DEFAULT_HEADERS, INDEX_STOCKS
+from stock_info.urls import MARKET_INDICES, INDEX_STOCKS
+from infrastructure.http_request import DEFAULT_HEADERS
 
 
 class StockIndex:

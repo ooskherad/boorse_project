@@ -18,7 +18,7 @@ def save_in_postgres(data: List[ClientTypeAllModel]):
     query = text("""
             select * from (
           select *,
-                 row_number() over (partition by stock_id order by id desc) as rn
+                 row_number() over (partition by stock_id order by transaction_at desc) as rn
           from stock_client_types
           where stock_id::text = ANY(:stock_ids)
         ) t

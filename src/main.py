@@ -6,6 +6,7 @@ from infrastructure.database.postgres.data_types import BaseModel
 from infrastructure.database.postgres.postgres_connection import DEFAULT_ENGIN
 from workers.market_watch import market_watch_worker
 from workers.stock_info import stock_info_worker
+from workers.stock_price import get_stock_price_worker
 
 
 def worker_function(worker):
@@ -13,6 +14,7 @@ def worker_function(worker):
 
 
 if __name__ == '__main__':
+    # get_stock_price_worker()
     market_watch_worker()
     BaseModel.metadata.create_all(DEFAULT_ENGIN)
     workers = [
