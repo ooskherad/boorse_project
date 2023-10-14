@@ -3,8 +3,8 @@ import datetime
 import requests
 from sqlalchemy import text
 
-from databse.models import Stock
-from databse.models.stock_price import StockPrice
+from database.models import Stock
+from database.models.stock_price import StockPrice
 from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
 from infrastructure.helper.utils import convert_string_to_time
 from infrastructure.http_request import DEFAULT_HEADERS, get

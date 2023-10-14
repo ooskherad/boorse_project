@@ -4,7 +4,7 @@ from typing import List
 import jdatetime
 import requests as requests
 
-from databse.models import Stock
+from database.models import Stock
 from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
 from infrastructure.helper.utils import TEHRAN, convert_string_to_time
 from infrastructure.http_request import get
@@ -41,6 +41,7 @@ class MarketWatch:
                 split_date = data_[1].split(' ')[0].split('/')
                 self.date = jdatetime.date(int('14' + split_date[0]), int(split_date[1]), int(split_date[2])).togregorian()
             self.__len_data = len(self.__data[0].split(','))
+            self.calculate_refer()
         except Exception as e:
             print(e)
 
@@ -91,7 +92,7 @@ class MarketWatch:
 
     def save_new_stocks(self):
         session = DEFAULT_SESSION_FACTORY()
-        stocks_in_db = [str(stock.id) for stock in session.query(Stock.id).all()]
+        stocks_in_db = [stock.id for stock in session.query(Stock.id).all()]
         for item in self.data:
             if item.stock_id not in stocks_in_db:
                 stock_model = Stock()
@@ -104,5 +105,4 @@ class MarketWatch:
         url = INIT_MARKET_WATCH_URL if self.__heven == 0 and self.__refer == 0 else PLUS_MARKET_WATCH_URL
         self.req(url.format(h=self.__heven, r=self.__refer))
         self.split_data()
-        self.calculate_refer()
         self.model_data()

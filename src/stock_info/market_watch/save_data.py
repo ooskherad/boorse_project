@@ -2,8 +2,8 @@ from typing import List
 from influxdb_client import Point
 from sqlalchemy import text
 
-from databse.models.stock_price import StockPrice
-from databse.models.stock_price_detail import StockPriceDetail, factor_stock_price_detail
+from database.models.stock_price import StockPrice
+from database.models.stock_price_detail import StockPriceDetail, factor_stock_price_detail
 from infrastructure.database.influx.connection import InfluxDb
 from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
 from stock_info.market_watch.models import MarketWatchModel

@@ -29,15 +29,15 @@ class ClientType:
     def model_data(self):
         for split_data in self.__data:
             self.data.append(ClientTypeAllModel(
-                stock_id=split_data[0],
-                number_of_real_in_buy=split_data[1],
-                number_of_legal_in_buy=split_data[2],
-                number_of_legal_in_sell=split_data[6],
-                number_of_real_in_sell=split_data[5],
-                volume_of_real_in_buy=split_data[3],
-                volume_of_real_in_sell=split_data[7],
-                volume_of_legal_in_sell=split_data[8],
-                volume_of_legal_in_buy=split_data[4],
+                stock_id=int(split_data[0]),
+                number_of_real_in_buy=int(split_data[1]),
+                number_of_legal_in_buy=int(split_data[2]),
+                number_of_legal_in_sell=int(split_data[6]),
+                number_of_real_in_sell=int(split_data[5]),
+                volume_of_real_in_buy=int(split_data[3]),
+                volume_of_real_in_sell=int(split_data[7]),
+                volume_of_legal_in_sell=int(split_data[8]),
+                volume_of_legal_in_buy=int(split_data[4]),
             ))
 
     def get_data(self):
@@ -53,7 +53,7 @@ class ClientType:
         last_changed_identifier = sorted(last_changed_identifier, key=lambda item: item.stock_id)
         for client_data in self.data:
             for stock_info in last_changed_identifier:
-                if client_data.stock_id == str(stock_info.stock_id):
+                if client_data.stock_id == stock_info.stock_id:
                     client_data.last_price = stock_info.price_last
                     client_data.transaction_at = stock_info.transaction_at
                     data.append(client_data)

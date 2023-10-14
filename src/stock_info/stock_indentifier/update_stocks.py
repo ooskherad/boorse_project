@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from databse.models import Stock
+from database.models import Stock
 from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
 from stock_info.urls import STOCK_IDENTIFIER
 from infrastructure.http_request import DEFAULT_HEADERS
@@ -36,5 +36,3 @@ def get_stock_info():
         stock.creation_data = data
     session.commit()
 
-
-get_stock_info()

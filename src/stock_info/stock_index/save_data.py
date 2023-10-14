@@ -1,6 +1,6 @@
 from typing import List
 
-from databse.models import Index as IndexModel, IndexStock, Stock
+from database.models import Index as IndexModel, IndexStock, Stock
 from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
 from stock_info.stock_index.models import Index
 
