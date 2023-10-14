@@ -33,9 +33,13 @@ class MarketWatch:
     def split_data(self):
         data_ = self.__raw_data.split('@')
         try:
+            if len(data_) < 2:
+                self.__data = []
+                return
             self.__data = data_[2].split(';')
-            split_date = data_[1].split(' ')[0].split('/')
-            self.date = jdatetime.date(int('14' + split_date[0]), int(split_date[1]), int(split_date[2])).togregorian()
+            if data_[1] != '':
+                split_date = data_[1].split(' ')[0].split('/')
+                self.date = jdatetime.date(int('14' + split_date[0]), int(split_date[1]), int(split_date[2])).togregorian()
             self.__len_data = len(self.__data[0].split(','))
         except Exception as e:
             print(e)

@@ -53,7 +53,7 @@ class ClientType:
         last_changed_identifier = sorted(last_changed_identifier, key=lambda item: item.stock_id)
         for client_data in self.data:
             for stock_info in last_changed_identifier:
-                if client_data.stock_id == stock_info.stock_id:
+                if client_data.stock_id == str(stock_info.stock_id):
                     client_data.last_price = stock_info.price_last
                     client_data.transaction_at = stock_info.transaction_at
                     data.append(client_data)
