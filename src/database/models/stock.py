@@ -26,5 +26,7 @@ class Stock(BaseModel):
     industry_group_name: Mapped[str] = mapped_column(String(60), nullable=True)
     industry_subgroup_name: Mapped[str] = mapped_column(String(60), nullable=True)
     base_volume: Mapped[int] = mapped_column(BigInteger, nullable=True)
+    total_stock_number: Mapped[int] = mapped_column(BigInteger, nullable=True)
+    eps: Mapped[int] = mapped_column(Integer, nullable=True)
     created_at: Mapped[datetime.datetime] = DataType().created_at
     creation_data: Mapped[dict] = mapped_column(JSONB, nullable=True)

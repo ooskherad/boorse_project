@@ -8,8 +8,11 @@ DEFAULT_URl = URL.create("postgresql+psycopg2", username=config.POSTGRES_USER, p
 
 DEFAULT_ENGIN = create_engine(
     DEFAULT_URl,
-    poolclass=NullPool,
-    isolation_level="REPEATABLE READ",
+    pool_size=10,
+    max_overflow=2,
+    pool_recycle=300,
+    pool_pre_ping=True,
+    pool_use_lifo=True,
     echo=config.DEBUG,
 )
 

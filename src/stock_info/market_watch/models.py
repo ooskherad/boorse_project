@@ -18,11 +18,13 @@ class MarketWatchModel:
     price_authorized_max: int
     price_authorized_min: int
     total_stock_number: int
+    industry_group_code: int
+    base_volume: int
 
     def __init__(self, stock_id=None, price_first=None, price_last=None, price_close=None, transaction_count=None,
-                 transaction_volume=None,
+                 transaction_volume=None, industry_group_code=None,
                  transaction_at=None, price_min=None, price_max=None, price_yesterday=None, eps=None,
-                 price_authorized_max=None,
+                 price_authorized_max=None, base_volume=None,
                  price_authorized_min=None, total_stock_number=None, symbol=None, name=None, **kwargs):
         self.stock_id: str = stock_id
         self.symbol: str = symbol
@@ -40,3 +42,5 @@ class MarketWatchModel:
         self.price_authorized_max: int = price_authorized_max
         self.price_authorized_min: int = price_authorized_min
         self.total_stock_number: int = total_stock_number
+        self.industry_group_code: int = industry_group_code
+        self.base_volume: int = base_volume

@@ -4,3 +4,4 @@
 __pycache__
 /src/scripts
 logs.txt
+local_dev.py

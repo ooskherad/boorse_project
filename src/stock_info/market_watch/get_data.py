@@ -92,13 +92,28 @@ class MarketWatch:
 
     def save_new_stocks(self):
         session = DEFAULT_SESSION_FACTORY()
-        stocks_in_db = [stock.id for stock in session.query(Stock.id).all()]
+        stocks_in_db = {}
+        for stock in session.query(Stock).all():
+            stocks_in_db[stock.id] = stock
+
+        stock_ids = stocks_in_db.keys()
         for item in self.data:
-            if item.stock_id not in stocks_in_db:
+            if item.stock_id not in stock_ids:
                 stock_model = Stock()
                 stock_model.id = item.stock_id
+                stock_model.name_fa = item.name
+                stock_model.symbol_name = item.symbol
+                stock_model.industry_group_code = item.industry_group_code if item.industry_group_code != '' else None
+                stock_model.eps = item.eps if item.eps != '' else None
+                stock_model.total_stock_number = item.total_stock_number if item.total_stock_number != '' else None
+                stock_model.base_volume = item.base_volume if item.base_volume != '' else None
                 session.add(stock_model)
-                stocks_in_db.append(item.stock_id)
+            else:
+                stock_model = stocks_in_db[item.stock_id]
+                stock_model.eps = item.eps if item.eps != '' else None
+                stock_model.total_stock_number = item.total_stock_number if item.total_stock_number != '' else None
+                stock_model.base_volume = item.base_volume if item.base_volume != '' else None
+
         session.commit()
 
     def get_data(self):

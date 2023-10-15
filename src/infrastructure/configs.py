@@ -6,11 +6,11 @@ class Config(BaseSettings):
     PORT = 8008
 
     # POSTGRES CONFIGS
-    POSTGRES_USER = ""
-    POSTGRES_PASSWORD = ""
-    POSTGRES_DATABASE = ""
-    POSTGRES_PORT = ""
-    POSTGRES_HOST = ""
+    POSTGRES_USER = "postgres"
+    POSTGRES_PASSWORD = "1234"
+    POSTGRES_DATABASE = "postgres"
+    POSTGRES_PORT = "5433"
+    POSTGRES_HOST = "194.33.127.252"
 
     INFLUX_URL = ""
     INFLUX_TOKEN = ""
