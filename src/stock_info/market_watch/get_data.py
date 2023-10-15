@@ -109,10 +109,11 @@ class MarketWatch:
                 stock_model.base_volume = item.base_volume if item.base_volume != '' else None
                 session.add(stock_model)
             else:
-                stock_model = stocks_in_db[item.stock_id]
-                stock_model.eps = item.eps if item.eps != '' else None
-                stock_model.total_stock_number = item.total_stock_number if item.total_stock_number != '' else None
-                stock_model.base_volume = item.base_volume if item.base_volume != '' else None
+                pass
+                # stock_model = stocks_in_db[item.stock_id]
+                # stock_model.eps = item.eps if item.eps != '' else None
+                # stock_model.total_stock_number = item.total_stock_number if item.total_stock_number != '' else None
+                # stock_model.base_volume = item.base_volume if item.base_volume != '' else None
 
         session.commit()
 
