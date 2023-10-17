@@ -38,7 +38,7 @@ def save_in_postgres(data: List[ClientTypeAllModel]):
     for item in data:
         last_client = client_type_in_db.get(item.stock_id)
         if last_client and last_client.transaction_at.date() == item.transaction_at.date() and not (
-                last_client.transaction_at != item.transaction_at and (
+                item.transaction_at.time() != last_client.transaction_at.time() and (
                 last_client.number_of_real_in_sell < item.number_of_real_in_sell or
                 last_client.number_of_real_in_buy < item.number_of_real_in_buy or
                 last_client.number_of_legal_in_sell < item.number_of_legal_in_sell or

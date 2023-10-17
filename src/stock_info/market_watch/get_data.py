@@ -3,6 +3,8 @@ from typing import List
 
 import jdatetime
 import requests as requests
+from pydantic import BaseModel
+from sqlalchemy import text
 
 from database.models import Stock
 from infrastructure.database.postgres.postgres_connection import DEFAULT_SESSION_FACTORY
@@ -16,6 +18,7 @@ from stock_info.urls import INIT_MARKET_WATCH_URL, PLUS_MARKET_WATCH_URL
 
 class MarketWatch:
     def __init__(self):
+        self.duplicate_names = self.get_duplicate_names()
         self.data: List[MarketWatchModel] = []
         self.__raw_data: str = ""
         self.__data: any = None
@@ -39,7 +42,8 @@ class MarketWatch:
             self.__data = data_[2].split(';')
             if data_[1] != '':
                 split_date = data_[1].split(' ')[0].split('/')
-                self.date = jdatetime.date(int('14' + split_date[0]), int(split_date[1]), int(split_date[2])).togregorian()
+                self.date = jdatetime.date(int('14' + split_date[0]), int(split_date[1]),
+                                           int(split_date[2])).togregorian()
             self.__len_data = len(self.__data[0].split(','))
             self.calculate_refer()
         except Exception as e:
@@ -65,6 +69,8 @@ class MarketWatch:
         row_indices = self.get_data_indices()
         for row_data in self.__data:
             sample = row_data.split(',')
+            if sample[row_indices.STOCK_ID.value] in self.duplicate_names.keys():
+                sample[row_indices.STOCK_ID.value] = self.duplicate_names[sample[row_indices.STOCK_ID.value]]
             market_watch_model = MarketWatchModel()
             for key, index in row_indices.__members__.items():
                 key = key.lower()
@@ -122,3 +128,18 @@ class MarketWatch:
         self.req(url.format(h=self.__heven, r=self.__refer))
         self.split_data()
         self.model_data()
+
+    def get_duplicate_names(self):
+        session = DEFAULT_SESSION_FACTORY()
+        query = """
+        select s1.symbol_name
+         , max(s1.id) filter ( where s1.name_en notnull ) as id
+         , max(s1.id) filter ( where s1.name_en isnull) as fake_id
+        from stocks s1
+             join stocks s2 on s1.symbol_name = s2.symbol_name and s1.id <> s2.id
+        group by s1.symbol_name, s2.symbol_name"""
+        data = session.execute(text(query)).all()
+        result = {}
+        for item in data:
+            result[str(item[2])] = item[1]
+        return result
